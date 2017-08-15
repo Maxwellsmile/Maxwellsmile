@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <input type="text" id="a1"><br>
+    <input type="text" id="a2"><br>
+    <input type="text" id="a3"><br>
+    <input type="text" id="a4">
+    <input type="button"  value="点击" onclick="zzr()"/>
+  </head>
+  <body>
+    <script>
+        function zzr(){
+           var a =parseInt(document.getElementById('a1').value);
+           var b =parseInt(document.getElementById('a2').value);
+           var c =parseInt(document.getElementById('a3').value);
+           var d =parseInt(document.getElementById('a4').value);
+           var arr=[a,b,c,d];
+
+           for (var i=0;i<arr.length-1;i++){
+             for(var j=0;j<arr.length-i-1;j++){
+               if (arr[j+1]>arr[j]){
+                  var tmp=arr[j];
+                  arr[j]=arr[j+1];
+                  arr[j+1]=tmp;
+               }
+             }
+           }
+            var arr1=[];
+            var arr2=[];
+           for(var n=0;n<arr.length/2;n++){
+              arr1[n]=arr[n*2];
+              arr2[n]=arr[n*2+1];
+         }
+          for (var w=0;w<arr2.length-1;w++){
+             for(var q=0;q<arr2.length-w-1;q++){
+                  if (arr2[q+1]<arr2[q]){
+                      var tmp=arr2[q];
+                       arr2[q]=arr2[q+1];
+                        arr2[q+1]=tmp;
+                 }
+                }
+            }
+        var newarr=[[arr1],[arr2]];
+        alert(newarr);
+}
+    </script>
+  </body>
+</html>

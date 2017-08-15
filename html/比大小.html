@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>比大小</title>
+  </head>
+  <body>
+    <input type="text" id="a1"><br>
+    <input type="text" id="a2"><br>
+    <input type="text" id="a3">
+    <input type="button" value="开始" onclick="beter()">
+    <p id="a4"></p>
+    <script>
+      function beter () {
+
+         // 拿值
+         // 把字符串转成整数   parseInt()
+        var num1 = parseInt(document.getElementById('a1').value);
+        var num2 = parseInt(document.getElementById('a2').value);
+        var num3 = parseInt(document.getElementById('a3').value);
+        // alert(typeof(num3));
+
+        //  比大小
+
+         if (num1 < num2 ){
+            var tmp = num1;
+            num1 = num2;
+            num2 = tmp;
+         }
+
+         if(num1 < num3){
+            var tmp = num1;
+            num1 = num3;
+            num3 = tmp;
+         }
+
+         if(num2 < num3){
+              var tmp = num2;
+              num2 = num3;
+              num3 = tmp;
+         }
+
+
+         document.getElementById('a4').innerHTML = num1 + "&nbsp;&nbsp;&nbsp;&nbsp;" + num2 + "&nbsp;&nbsp;&nbsp;&nbsp;" + num3;
+
+
+       }
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,993 @@
+<!--
+　web 开发　
+
+　　　　前端　　　html   -
+
+               css    -
+
+               javascript  -编程
+
+
+　　　　逻辑     java
+
+　　　　数据库    mysql
+
+
+        HTML 定义了网页的内容
+        CSS 描述了网页的布局
+        JavaScript 网页的行为
+
+
+javascript
+
+一　javascript 是什么？　
+
+     　1. 运行在浏览器端,定义网页的行为.
+      ２．所有的html页面都有js.
+　　
+二　javascript 定义方式?
+
+　1　在html文件里
+
+　　  js 可以在html文件里的任何位置．
+
+　　　html中的脚本必须放在<script></script>标签之间．
+
+　2 引外部的js文件
+
+   <head>
+      <script src="index.js"></script>
+   </head>
+
+三　javascript 语法规则？
+
+　　１　每条执行语句结束添加分号,表示语句完毕，
+　　２　jｓ代码按照执行顺序执行每条语句，
+　　３　js代码可以分批的组合,代码块以左花括号开始，右花括号结束，
+　　４　js代码大小写敏感，注意区分大小写，表示含义不同．
+　　５　js的注释 单行注释　//  多行注释　/*　js程序 　*/
+       html 注释
+       css  /* */
+
+四　javascript 字面量?
+    一个字面量就是一个常量　
+
+    数字　(Number)
+    　包含整数和小数　
+    字符串　(String)
+     使用单引号或者双引号包含的内容　"aadmin" 'admin'
+    数组　(Array)
+     [10,100,20,200,30,300]表示一组数，内部也可以是字符串等数据
+    对象　(Object)
+     {id:001,name:"liyang",age:10,adress:"西安"}
+    函数　(Function)
+    function functionName(参数){}
+    表达式
+    ３＋５　2*3
+
+五　javascript 输出?
+
+      1  警告框　window.alert()  - alert(''),
+      2  输出带html文档中　document.write()
+      3　写入到html元素里　innerHTML
+      4  打到控制台　　　console.log()
+
+六　变量
+
+     １　变量是用来存储数据的
+
+     2 怎么来定义变量
+    　　　　 用　var 定义变量　
+           用　等号　来为　变量赋值
+    ３语法格式
+    　　　  var varName = 变量值;
+      注意事项：
+          １变量名必须以字母开头．
+       　  2 变量名称对大小写敏感　（Ｙ　和　y 是不同的变量）．
+
+
+
+
+七　数据类型　
+
+    数字　　  number   整数或小数
+    字符串　  string   "" 或　＇＇
+    布尔　　  boolean  true / false
+    数组　　  array    用[  ]表示
+    对象　　  object   用 { }表示
+    空　　　  null
+    未定义　　undefined
+
+八　js 的基本写法
+
+　　　　function function(参数){
+              js函数块
+              [return 表达式]
+         }
+      []里面的值是可选内容．
+
+九　对象
+
+　　document 对象
+　　　　　对html页面的所有元素进行访问．
+
+        document.getElementsByClassName('className')
+        //是取得页面中标签中的class名
+
+        document.getElementById('id')
+        //是取得页面中标签中的id名
+
+        document.getElementsByName('name')
+        //是取得页面中标签名属性名为name的标签对象
+
+        document.getElementsByTagName('tagName')
+        //是取得页面中标签
+
+
+　　arguments
+    js  大多数就是对象
+    arguments js对象里的一种
+    作用：索引　
+
+    arguments.length;
+    //获取被传递参数的长度．
+
+    arguments[index]
+    //获取指定位置的参数值．
+
+
+
+  十　作用域　
+
+　　　１　什么是作用域：可访问变量，对象，函数的集合．
+
+　　　２　分类：局部作用域　和　全局作用域
+
+           局部作用域　：　局部变量　－　只能在函数的内部访问
+           全局作用域　：　全局变量　－　网页中所有脚本和函数均可使用．
+
+    　３　变量的生命周期：　
+
+    　　　　１　变量生命周期在声明时初始化．
+    　　　　２　局部变量在函数执行完之后销毁．
+    　　　　３　全局变量在页面关闭时销毁．
+
+    　４　函数参数：　只在函数内部起作用，是局部变量．
+
+     两者之间的区别 :
+
+                       全局变量          　　　     局部变量
+
+        定义位置   　js代码区内函数体外　            位于函数体中
+
+        作用范围    作用于整个js代码区域           只能在本函数体中进行使用
+                  （包括内部的所有函数）
+
+        生命周期     比较长                      比较短（随着函数的调用而产生，调用结束就销毁）
+
+     注意事项：　
+     　　　　1、在定义多个全局变量的时候，彼此之间是不允许重名的。
+        　  2、在定义局部变量的时候，彼此之间也是不允许重名的。
+          　3、但是全局变量和局部变量之间可以存在重名的情况，这时遵循的是就近的原则。
+
+
+
+局部变量
+
+<p>局部变量在声明的函数外不可以访问。</p>
+<p id="demo"></p>
+<script>
+myFunction();
+document.getElementById("demo").innerHTML = "carName 的类型是：" +  typeof carName;
+function myFunction()
+{
+    var carName = "Volvo";
+}
+
+
+
+全局变量
+
+var carName = "Volvo";
+myFunction();
+function myFunction()
+{
+    document.getElementById("demo").innerHTML =
+		"我可以显示 " + carName;
+}
+
+
+十一　函数
+
+　　　　１　什么是函数　：由事件驱动的或者当它被调用时执行的可重复使用的代码块。
+
+　　　　２　函数语法：
+                    function functionName(){
+                    　　　 执行代码
+                    }
+
+        　 注意：　JavaScript 对大小写敏感。关键词 function 必须是小写的，
+         　　　　并且必须以与函数名称相同的大小写来调用函数．
+
+     ３　分类　
+
+         １　调用带参数的函数
+
+　　　　　　　　　　在调用函数时，可以向其传递值，这些值被称为参数。
+
+　　　　　　　　　　这些参数可以在函数中使用。
+
+　　　　　　　　　　可以发送任意多的参数，由逗号 (,) 分隔：
+　　　　　　　　　　　myFunction(argument1,argument2)
+
+                  当您声明函数时，请把参数作为变量来声明：
+                  function myFunction(var1,var2)
+                  {
+                  　　　　代码
+                  }
+
+              eg:
+  <button onclick="myFunction('Harry Potter','Wizard')">点击这里</button>
+  <script>
+      function myFunction(name,job){
+      	alert("Welcome " + name + ", the " + job);
+      }
+ </script>
+
+      2  带有返回值的函数
+
+          我们会希望函数将值返回调用它的地方。通过使用 return 语句就可以实现。
+          在使用 return 语句时，函数会停止执行，并返回指定的值。
+
+      eg:
+      function myFunction(a,b){
+                return a*b;
+         }
+      document.getElementById("demo").innerHTML=myFunction(4,3);
+
+
+  十二　操作符　typeof
+
+      1 作用：　检测变量的数据类型．
+        eg: document.getElementById("demo").innerHTML =
+            	typeof "john" + "<br>" +
+            	typeof 3.14 + "<br>" +
+            	typeof false + "<br>" +
+            	typeof [1,2,3,4] + "<br>" +
+            	typeof {name:'john', age:34};　
+      注意：数组是一种特殊的对象类型。 因此 typeof [1,2,3,4] 返回 object
+
+      ２　null
+
+         null 表示 "什么都没有"。
+         null是一个只有一个值的特殊类型。表示一个空对象引用。
+
+      3  Undefined
+
+      　1　undefined 是一个没有设置值的变量。
+         一个没有值的变量会返回 undefined。
+      　　eg:
+            var person;
+            document.getElementById("demo").innerHTML =
+           	person + "<br>" + typeof person;
+
+       2 任何变量都可以通过设置值为 undefined 来清空。 类型为 undefined.
+
+         eg:
+          var person = {firstName:"John", lastName:"Doe", age:50, };
+          var person = undefined;
+          document.getElementById("demo").innerHTML =
+         	person + "<br>" + typeof person;
+
+
+  十三　 类型转换　
+
+　　(一)　
+        5 种不同的数据类型：string，number，boolean，object，function
+
+    　　  3 种对象类型： Object，Date，Array
+
+    　　  2个不包含任何值的数据类型：null，undefined
+
+　　eg:
+     document.getElementById("demo").innerHTML =
+        typeof "john" + "<br>" +
+        typeof 3.14 + "<br>" +
+        typeof NaN + "<br>" +
+        typeof false + "<br>" +
+        typeof [1,2,3,4] + "<br>" +
+        typeof {name:'john', age:34} + "<br>" +
+        typeof new Date() + "<br>" +
+        typeof function () {} + "<br>" +
+        typeof myCar + "<br>" +
+        typeof null;
+   注意：　
+        NaN 的数据类型是 number
+        数组(Array)的数据类型是 object
+        日期(Date)的数据类型为 object
+        null 的数据类型是 object
+        未定义变量的数据类型为 undefined
+　　　　　对象是Array 或  Date ，无法通过 typeof 来判断他们的类型，都返回 Object
+
+
+（二）　constructor 属性
+
+　　　　1　查看是对象是否为数组 (包含字符串 "Array"):
+　eg:
+      var fruits = ["Banana", "Orange", "Apple", "Mango"];
+      document.getElementById("demo").innerHTML = isArray(fruits);
+      function isArray(myArray) {
+         return myArray.constructor.toString().indexOf("Array") > -1;
+     }
+
+
+      2 查看是对象是否为日期 (包含字符串 "Date"):
+  eg:
+     var myDate = new Date();
+     document.getElementById("demo").innerHTML = isDate(myDate);
+     function isDate(myDate) {
+         return myDate.constructor.toString().indexOf("Date") > -1;
+     }
+
+
+  （三）　将数字转换为字符串
+
+    　１　全局方法 String() 可以将数字转换为字符串。
+　　　　　该方法可用于任何类型的数字，字母，变量，表达式：
+　　　eg:
+       var x = 123;
+       document.getElementById("demo").innerHTML =
+        String(x) + "<br>" +       // 将变量 x 转换为字符串并返回
+        String(123) + "<br>" +     // 将数字 123 转换为字符串并返回
+        String(100 + 23);          // 将数字表达式转换为字符串并返回
+
+      2  Number 方法 toString() 也是有同样的效果
+
+      var x = 123;
+      document.getElementById("demo").innerHTML =
+       x.toString() + "<br>" +
+       (123).toString() + "<br>" +
+       (100 + 23).toString();
+
+（四）将布尔值转换为字符串
+
+      1 全局方法 String()
+
+          String(false)        // 返回 "false"
+          String(true)         // 返回 "true"
+     eg:
+        document.getElementById("demo").innerHTML =
+        typeof(String(false) + "<br>" +
+        String(true));
+
+    2 Number 方法 toString()
+
+         false.toString()     // 返回 "false"
+         true.toString()      // 返回 "true"
+
+
+（五）将字符串转换为数字
+
+       1  全局方法 Number() 可以将字符串转换为数字。
+       字符串包含数字(如 "3.14") 转换为数字 (如 3.14).
+       空字符串转换为 0。其他的字符串会转换为 NaN (不是个数字)。
+       eg:
+        Number("3.14")    // 返回 3.14
+        Number(" ")       // 返回 0
+        Number("")        // 返回 0
+        Number("99 88")   // 返回 NaN
+
+       2
+         parseFloat() 	解析一个字符串，并返回一个浮点数。
+         parseInt() 	解析一个字符串，并返回一个整数。
+
+　　（六）将布尔值转换为数字
+
+          全局方法 Number() 可将布尔值转换为数字。
+
+      eg:
+          Number(false)     // 返回 0
+          Number(true)      // 返回 1
+
+
+　　（七）　一元运算符 +　(Operator + 可用于将变量转换为数字)
+         eg :
+               var y = "5";
+               var x = + y;
+               document.getElementById("demo").innerHTML =
+               typeof y + "<br>" + typeof x;
+
+        如果变量不能转换，它仍然会是一个数字，但值为 NaN (不是一个数字):
+
+        eg:
+        　　　 var y = "John";
+    　　　　　　var x = + y;
+              document.getElementById("demo").innerHTML =
+          		typeof x + "<br>" + x;
+
+    (八)　将日期转换为数字
+
+      　１　全局方法 Number() 可将日期转换为数字。
+
+        eg:
+           d = new Date();
+           Number(d)          // 返回 1404568027739
+
+        2 日期方法 getTime() 也有相同的效果。
+
+        eg:
+          d = new Date();
+          d.getTime()        // 返回 1404568027739
+
+          var d = new Date();
+          document.write(d.getTime());
+　　
+
+
+
+  十一　运算符
+
+　１　算术运算符
+
+　　　加　　　减　　乘　　除　　累加　　累减　　求模(求余数)
+　　　＋　　　－　　＊　　/     ++    --     %
+
+　２　赋值运算符
+
+      =    +=   -=   *=     /=     %=
+
+      +=
+
+    (  var x=10;
+       var y=5;
+       x+=y;  // x = x + y
+       var demoP=document.getElementById("demo")
+       demoP.innerHTML="x=" + x;  )
+
+　３　比较运算符
+      <    　 >    　>=     　<=     != (不等于)
+
+  ４　逻辑运算符
+
+    逻辑与　&&
+
+　　　　　当结果都为真的时候，返回true;
+        只要有一个条件不为真，返回false
+
+    逻辑或　||
+
+       条件只要有一个为真，返回true.
+
+    逻辑非　！
+
+        操作数为对象，空字符串，非零字符，返回false,
+        数值０，null  undefined 返回true.
+
+
+    三个结果一定是布尔类型(boolean).  true / false
+
+  ５　三目运算符
+
+       格式　：　表达式?语句１：语句2;
+
+       ５＞３？alert("5大于3"):alert("５小于３");
+
+  十二  流程控制语句
+
+     1  顺序结构
+
+      一  if 条件语句
+         if(条件语句){
+             执行语句;
+
+      二  if(条件语句){
+           执行语句一
+       }else{
+           执行语句二
+       }
+
+       //  if条件
+
+         var x = ""  //  初始化一个变量ｘ;
+         var time =new Date().getHours();
+         // 创建变量time为当时间的小时
+　　　　　　if(time<7){  //  判断变量time是否小于20
+              x = "GOOD day"; // 将变量x的值设置为good day
+         }else{
+              x = "GOOD evening";
+         }
+         // alert(x);
+
+       三  if(条件语句){
+             if(条件语句一){
+               执行语句一
+            }else{
+               执行语句二
+           }else{
+              if(条件语句二){
+                执行语句三
+            }else{
+                执行语句四
+              }
+           }
+
+eg:   //  给三个数，比大小　
+
+         function fn_i(a,b,c){
+
+            // if(a>b){
+            //     if(a>c){
+            //        alert("最大值："+a);
+            //     }else{
+            //        alert("最大值："+c);
+            //     }
+            // }else{
+            //    if(b>c){
+            //       alert("最大值："+b);
+            //    }else{
+            //       alert("最大值："+c);
+            //    }
+            // }
+
+            var maxValue = a>b?(a>c?a:c):(b>c?b:c);
+            alert(maxValue);
+
+          }
+
+         fn_i(7,5,3);
+
+
+
+
+
+
+     2  选择结构
+         switch 语句
+
+         switch(表达式){
+            case 值1:
+              语句1;
+              break;
+            case值2:
+              语句2;
+              break;
+            case值n:
+               语句n;
+              break;
+
+              default:
+                语句;
+                break;
+         }
+
+     3  循环结构
+
+         while  循环语句
+
+        while(条件表达式){
+            循环语句块;
+        }
+
+         do - while语句
+
+         do{
+             循环语句块
+         } while(条件表达式语句);
+
+
+    　  for(初始化表达式;循环表达式;循环后操作表达式){
+               循环语句块;
+        }
+
+
+     4  跳转结构
+
+        break   用于跳出整个switch 语句体或者是跳出整个循环体.
+
+        continue
+                同于终止整个循环中的指定某次循环.
+
+
+　　十三　DOM(文档对象模型)
+
+　　　１　作用　：　可访问javascript HTML文档的所有元素．
+
+　　　２　功能：　(1)　改变html输出流
+
+　　　　　　　　　　　eg: <script>
+                        document.write(Date());
+                      </script>
+
+　　   (2)　改变HTML内容
+
+        eg: <p id="p1">Hello World!</p>
+            <script>
+            document.getElementById("p1").innerHTML="新文本!";
+            </script>
+            <p>以上段落通过脚本修改文本。</p>
+
+　　   (3)　改变HTML属性
+
+       eg:
+      <img id="image" src="smiley.gif" width="160" height="120">
+      <script>
+          document.getElementById("image").src="landscape.jpg";
+      </script>
+
+      (4) 改变css样式
+
+      <p id="p1">Hello World!</p>
+      <p id="p2">Hello World!</p>
+      <script>
+      document.getElementById("p2").style.color="blue";
+      document.getElementById("p2").style.fontFamily="Arial";
+      document.getElementById("p2").style.fontSize="larger";
+      </script>
+      <p>以上段落通过脚本修改。</p>
+
+    　（５）使用的事件
+
+　　　１　元素被点击
+
+  　　eg:
+          <h1 id="id1">我的标题 1</h1>
+          <button type="button"
+          onclick="document.getElementById('id1').style.color='red'">
+          点我!</button>
+
+     ２　如需向ＨTML元素分配事件，可以使用事件属性
+
+   　eg：
+       <p>点击按钮执行 <em>displayDate()</em> 函数.</p>
+       <button onclick="displayDate()">点这里</button>
+       <script>
+       function displayDate(){
+        	document.getElementById("demo").innerHTML=Date();
+       }
+       </script>
+       <p id="demo"></p>
+
+
+
+     ３　onload 和　onunload 事件
+
+     　　用于在进入或离开页面时被触发，
+     　　onload 事件可用于检测访问者的浏览器类型和浏览器版本，并基于这些信息来加载网页的正确版本。
+　　　　　onload 和 onunload 事件可用于处理 cookie。
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        #a1{
+          color: red;
+        }
+    </style>
+  </head>
+  <body>
+
+      <input type="" required="">
+    <!-- <span id="a1">辉恢</span> -->
+    <!-- <span id="a1">admin</span> -->
+    <script>
+        // alert('辉辉')
+        // document.write('回回')
+        // document.getElementById("a1").innerHTML = Date();
+        //
+          // var a = 10;
+          // var b = 5;
+          // var c = a+b;
+          // alert(typeof b);
+        //
+        // console.log(c);
+
+        // function trim(){
+
+          //  alert(arguments.length);
+          // 长度不能从０开始
+
+          // alert(arguments[0]);
+          // alert(arguments[1]);
+          // alert(arguments[2]);
+          // alert(arguments[3]);
+          // alert(arguments[4]);
+          // alert(arguments[5]);
+          // alert(arguments[6]);
+        // 获取数据位置从０开始．
+
+       // 　　if(5<3){
+       //            alert('true');
+       //        }else {
+      //             alert('false');
+      //        }
+
+      //     var a = new Number(1);
+
+     //      alert(typeof a);
+
+     //   }
+    //   trim();
+
+        　function fn_a(a,b){
+
+               var result = a%b;
+               alert(result);
+          }
+          // fn_a(10,20);
+
+          function fn_b(a){
+            var result = a++; // 首先带入自身值，执行运算后，在自身加１;
+            var adm = ++a;  //  首先自身值加１，在带入运算，
+            alert(result); //1
+            // alert(a); //2
+            alert(adm)　
+          }
+          // fn_b(1);
+
+          function fn_c(){
+
+             var x = 9;
+             var y = 4;
+             var z = 6;
+            //  alert((x++ * --z - y--)/(--y*(z++ + z-- - --y + x++ + z-- + ++x ))*(x++ + y-- + z++));
+            alert((++y * --z - y--)/(y*(z++ + y-- + --y + x++ + z-- + --x ))*(z++ + x-- + y++))
+            alert((x*(x++ + --y + y-- - z++ + z--)/(z++ - y-- - --z + ++x - ++y))-(x++ - y-- - z--))
+            //  alert(x*(x++ + --y + y-- - z++ + z--));
+            //        1*(1 + 2 + 2 - 5 + 6)
+            // alert(--x*(--y - x++ + y++ + ++z - --z - y++)+ y++)
+            // (x++ * --z - y--)/(--y*(z++ + z-- - --y + x++ + z-- + ++x ))*(x++ + y-- + z++)
+               //6*(2 - 6 + 2 + 6 - 5 - 3 ) + 4
+               //
+
+          }
+
+          fn_c();
+       // 给两个数，完成数值的交换
+          function fn_d(){
+
+                var a = 1;
+                var b = 20;
+
+                // var c;
+                // c = a;
+                // a = b;
+                // b = c;
+
+                a = a+b;
+                b = a-b;
+                a = a-b;
+               alert("a="+a+"---b="+b);
+            }
+            // fn_d();
+
+            function fn_e(a,b){
+
+                   if(a!=b){
+                      alert("辉恢")
+                   }else {
+                     alert("晨晨");
+                   }
+
+            }
+            // fn_e(30,30);
+
+            function fn_f(){
+
+               var result = true||false;
+               result = !((1>2)||(3<5));
+               alert(result);
+
+            }
+            // fn_f();
+
+            // 5<3?alert("11111"):alert("22222");
+
+            // 九九乘法表
+
+            function fn_g(){
+
+              for(var i=1;i<10;i++){
+                  for(var j=1;j<=i;j++){
+                      document.write(j+"x"+i+"="+(j*i>=10?(i*j):"0"+(i*j))+" ");
+                  }
+                  document.write("<br>");
+              }
+
+            }
+
+            // fn_g();
+
+            function fn_h(a,b){
+                 if(a>b){
+                   alert("111");
+                 }else {
+                   alert("2222");
+                 }
+            }
+            // fn_h(10,20);
+
+            // 给三个数,比大小
+
+            function fn_i(a,b,c){
+                if(a>b){
+                  if(a>c){
+                    alert("最大值:"+a);
+                  }else{
+                    alert("最大值:"+c);
+                  }
+                }else{
+                  if(b>c){
+                    alert("最大值:"+b);
+                  }else{
+                    alert("最大值:"+c);
+                  }
+                }
+                var maxValue = a>b?(a>c?a:c):(b>c?b:c);
+                alert(maxValue);
+            }
+            // fn_i(7,2,3);
+
+            function fn_j(){
+              var x = 'a';
+              switch(x){
+                 case 'a' :
+                  alert("1");
+                  break;  //  跳出本次循环.
+                  case 2:
+                  alert("2");
+                  break;  //  跳出本次循环.
+                  case 3:
+                  alert("3");
+                  break;  //  跳出本次循环.
+
+                  default:
+                   alert("条件不匹配");
+                   break;
+              }
+            }
+            // fn_j();
+
+            function fn_k(){
+
+                  var x = 1;
+
+                  while(x<=10){
+                    alert("x="+x);
+                    //存在改变变量的语句,否则就是一个死循环.
+                    x++;
+                  }
+
+                  //特点 : 首先判断条件,然后在确定是否执行循环体.
+            }
+              // fn_k();
+
+           function fn_l(){
+             var x =1;
+              do{
+                 alert("x="+x);
+                 x++;
+              }while(x<=10);
+
+             //特点 :  首先执行一次循环,在判断条件,然后在确定是否执行.
+           }
+
+          //  fn_l();
+
+          function fn_m(){
+             document.write("Starting Loop" + "<br>");
+             var count;
+             for(count=0;count<100; count++){
+               document.write("排名第:"+count);
+               document.write("<br>");
+             }
+          }
+          // fn_m();
+
+          function fn_n(){
+         //   =  赋值号    == 全等     ===  恒等 (数字和数据类型一样)
+              var x = "";
+              var i = 0;
+              for(i=0;i<=10;i++){
+                  if(i==3){
+                    // continue;
+                    break;
+                  }
+
+                  x = x+"该数字为 "+i+"<br>";
+              }
+              document.getElementById("a1").innerHTML=x;
+          }
+
+          // fn_n();
+
+
+
+    </script>
+    <!-- <button onclick="trim()">调用</button> -->
+    <!-- <p id="a1"></p> -->
+    <!-- <button onclick="fn_n()">调用</button> -->
+    <script>
+        function nm(){
+         //拿值
+        var num1 = parseInt(document.getElementById('num1').value);
+        var num2 = parseInt(document.getElementById('num2').value);
+        var num3 = parseInt(document.getElementById('num3').value);
+
+        // 比大小
+        if(num1<num2){
+           var temp = num1;
+           num1 = num2;
+           num2 = temp;
+        }
+        if(num1<num3){
+           var temp = num1;
+           num1 = num3;
+           num3 = temp;
+        }
+        if(num2<num3){
+          var temp = num2;
+          num2 = num3;
+          num3 = temp;
+        }
+
+        var txt = num1 + "&nbsp;&nbsp;&nbsp;"+ num2 +  "&nbsp;&nbsp;&nbsp;"+ num3;
+        document.getElementById("p1").innerHTML = txt;
+
+
+        // parseInt()  解析一个字符串,并返回一个整数.
+        }
+
+
+
+        // 三目运算符
+        //
+        // 表达式? 语句1:语句2;
+
+
+
+
+
+
+
+    </script>
+
+    <!-- <input type="text" id="num1">
+    <input type="text" id="num2">
+    <input type="text" id="num3">
+    <button onclick="nm()">比大小</button>
+    <p id="p1"></p> -->
+
+    <script>
+          function fun_p(){
+              var x = document.getElementById("email").value;
+              var a = x.indexOf("@");
+              var d = x.lastIndexOf(".");
+
+               if(a>1 && d>a+2 && d+2<=x.length){
+                       alert("地址有效");
+                       // return false;
+                 }else {
+                       alert("格式不正确");
+                }
+           }
+
+    </script>
+
+    <!--
+      <form name="myForm" onsubmit="return fun_c();">
+    -->
+    <!-- <input type="text" id="email"> -->
+    <!-- <input type="submit" value="提交"> -->
+    <!-- <button onclick="fun_p()">提交</button> -->
+
+
+
+
+
+</body>
+
+</html>

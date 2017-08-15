@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <div id="d1">
+    </div>
+    <script>
+      "use strict"
+      window.onload=function(){
+      var result=0;
+      var temp1=0;
+      var temp2=0;
+      var op=0;
+      var der=document.getElementById("d1")
+      var p1=document.createElement("p")//创建一个p标签赋给P1
+      var txt=document.createTextNode("简单的计算器")//创建一个文本节点
+      p1.appendChild(txt)//把文本"简单的计算器"放进P1
+      der.appendChild(p1);//把P1放进der里
+      var input1=document.createElement("input")//创建一个input的标签赋给input1
+      der.appendChild(input1);//把input1放进der里
+      var num=[7,8,9,"Del","C",4,5,6,"*","/",1,2,3,"+","-","0","%","="];//创建一个数组
+      var num1=new Array();
+      var num2=new Array();
+        for(var i=0;i<num.length;i++){
+          num1[i]=document.createElement("button")
+          num2[i]=document.createTextNode(num[i])
+          der.appendChild(num1[i])
+          num1[i].appendChild(num2[i])
+          num1[i].onclick=function(){
+            ftest(this.innerHTML);
+          }
+        }
+
+
+        function str(bt){
+          temp2=input1.value;
+          switch (bt) {
+            case 1:
+            var im=parseFloat(temp1)+parseFloat(temp2);
+            input1.value=im.toString();
+            break;
+            case 2:
+            var im=parseFloat(temp1)-parseFloat(temp2);
+            input1.value=im.toString();
+            break;
+            case 3:
+            var im=parseFloat(temp1)*parseFloat(temp2);
+            input1.value=im.toString();
+            break;
+            case 4:
+            var im=parseFloat(temp1)/parseFloat(temp2);
+            input1.value=im.toString();
+            break;
+            case 5:
+            var im=parseFloat(temp1)%parseFloat(temp2);
+            input1.value=im.toString();
+            break;
+          }
+          op=0;
+        }
+        function ftest(bt){
+          switch (bt) {
+            case '0':
+              if((op<2)&&(input1.value!=='')){
+                input1.value=input1.value+bt;
+              }
+              break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+              if(op<2){
+                input1.value=input1.value+bt;
+              }
+              break;
+            case '+':
+              if(input1.value!==''){
+                temp1=input1.value;
+                input1.value='';
+                result=1;
+                op=op+1;
+              }
+              break;
+            case '-':
+              if(input1.value!==''){
+                temp1=input1.value;
+                input1.value='';
+                result=2;
+                op=op+1;
+              }
+              break;
+            case '*':
+              if(input1.value!==''){
+                temp1=input1.value;
+                input1.value='';
+                result=3;
+                op=op+1;
+              }
+              break;
+            case '/':
+              if(input1.value!==''){
+                temp1=input1.value;
+                input1.value='';
+                result=4;
+                op=op+1;
+              }
+              break;
+            case '%':
+              if(input1.value!==''){
+                temp1=input1.value;
+                input1.value='';
+                result=5;
+                op=op+1;
+              }
+              break;
+            case '.':
+              for(let i=0;i<input1.value.length;i++){
+                if(input1.value[i]!==''){
+                  var op1=1;
+                }
+                if(op1!=1){
+                  input1.value=input1.value+'.';
+                }
+              }
+
+            case 'Del':
+              if(input1.value!==''){
+                input1.value=input1.value.substr(0,input1.value.length-1);
+              }
+              break;
+            case 'C':
+              input1.value='';
+              break;
+            case '=':
+                      str(result);
+
+              break;
+          }
+
+        }
+}
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

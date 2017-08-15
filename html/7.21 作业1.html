@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <input type="text" id="a1"><br>
+    <input type="text" id="a2"><br>
+    <input type="text" id="a3"><br>
+    <input type="text" id="a4">
+    <input type="button"  value="点击" onclick="zzr()"/>
+  </head>
+  <body>
+    <script>
+        function zzr(){
+           var a =parseInt(document.getElementById('a1').value);
+           var b =parseInt(document.getElementById('a2').value);
+           var c =parseInt(document.getElementById('a3').value);
+           var d =parseInt(document.getElementById('a4').value);
+           var arr=[a,b,c,d];
+
+           for (var i=arr.length-1;i>=0;i--){
+             for(var j=arr.length-i-1;j>=0;j--){
+               if (arr[j]>arr[j-1]){
+                  var tmp=arr[j];
+                  arr[j]=arr[j-1];
+                  arr[j-1]=tmp;
+               }
+             }
+           }
+        alert(arr);
+}
+
+
+    </script>
+  </body>
+</html>

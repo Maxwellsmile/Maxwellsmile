@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>幸福指数</title>
+  </head>
+  <body>
+    <h1>幸福指数</h1>
+    <input type="text" id="a1">
+    <input type="button" value="开始" onclick="choose()">
+    <script>
+       'use strict';
+      function choose(){
+
+        var arr =document.getElementById("a1").value;
+        // alert(arr.length);
+        for(var i=0;i<arr.length;i++){
+              // alert(arr[i]/0);
+               if(isNaN(arr[i]/0)){
+                //  alert(arr[i]/0);
+                var j=6;
+                //  alert(typeof(arr[i]/0));
+              }else{j=5;}
+        }
+        var num1=Number(arr);
+        //  alert(num1);
+        if(j==6){
+          alert ("false!!!");
+        }
+        else if(num1<=3000){
+          alert("屌丝");
+        }
+        else if (num1<8000) {
+          alert("小白");
+        }
+        else if (num1<15000) {
+          alert ("白领");
+        }
+        else if (num1>=15000) {
+          alert ("boss");
+        }
+      }
+      //alert (typeof("a1"));
+    </script>
+
+  </body>
+</html>

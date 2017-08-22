@@ -1,0 +1,131 @@
+注：
+
+      Databasename  数据库名
+
+      Tablename     表名
+
+      字符串需要加上引号
+
+      字段名后面跟的是字段的属性
+
+ 
+
+// 建库
+
+CREATE DATABASE databasename;
+
+ 
+
+// 显示所有的数据库。
+
+SHOW DATABASES;
+
+ 
+
+// 进入数据库。
+
+USE databasename;
+
+ 
+
+// 建表
+
+CREATE TABLE tablename(
+
+  Id  INT(4) NOT NULL PRIMARY KEY (主键) AUTO_INCREMENT (自增长),
+
+  NAME  CHAR(20) NOT NULL,
+
+  Sex  INT(4) NOT NULL DEFAULT '0',
+
+  degree DOUBLE(16,2));
+
+ 
+
+// 显示数据库里所有的表
+
+ 
+
+SHOW TABLES;
+
+ 
+
+// 表的结构
+
+DESC  tablename
+
+ 
+
+// 表里插入数据。
+
+INSERT INTO tablename  VALUES(99,'Tom',96,45),(999,'Joan',82,99),(998,'Wang', 96,59);
+
+ 
+
+// 查询表里的数据
+
+SELECT * FROM tablename;
+
+ 
+
+// 修改表中数据。
+
+UPDATE  tablename SET  NAME='修改的名字' WHERE id=123;
+
+ 
+
+// 按照id来删除表里的数据
+
+DELETE FROM tablename WHERE id=123;
+
+ 
+
+// 查询表里的几行到几行的数据。
+
+SELECT * FROM tablename ORDER BY id LIMIT 0,2;      order by  排序   limit  限制输出多少行。
+
+ 
+
+// 按照表头名字插入数据。
+
+INSERT INTO tablename ( NAME, sex) VALUES ('Wilson', 'Etablenamesees');
+
+ 
+
+// 增加字段。
+
+ALTER TABLE tablename ADD  字段名  INT(4) DEFAULT '0';
+
+ 
+
+// 修改列属性。
+
+ALTER  TABLE  tablename  MODIFY  NAME  VARCHAR (12);
+
+ 
+
+// 修改列名及属性。
+
+ALTER TABLE tablename CHANGE NAME  name1  CHAR (20);
+
+ 
+
+// 删除列
+
+ALTER TABLE tablename  DROP COLUMN 列名;
+
+ 
+
+// 删除数据库。
+
+DROP DATABASE databasename;
+
+ 
+
+// 修改not null
+
+UPDATE 表名　 SET　 列名 = '　'　 WHERE 　列名 　IS NULL
+
+ALTER TABLE 表名 MODIFY 列名 VARCHAR(255) NOT NULL
+
+ 

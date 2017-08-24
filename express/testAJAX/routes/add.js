@@ -11,9 +11,18 @@ var connection = mysql.createConnection({
   database: 'testuser'
 });
 
+var user = {
+    "user5" : {
+      "id": 5,
+      "name" : "suresh",
+      "password" : "password5",
+      "profession" : "librarian"
+    }
+  }
+
 router.get('/', function(req, res) {
-    var sql = 'insert into test(_order,_name,_password,_profession,_id)values(?,?,?,?)';
-    var info = ["4", "mohit", "password4", "teacher"];
+    var sql = "INSERT INTO test(id,name,password,profession)VALUES(?,?,?,?)";
+    var info = [user.user5.id,user.user5.name,user.user5.password,user.user5.profession];
     // connection.connect();
     connection.query(sql, info, function (err, result) {
         if (err) {
@@ -25,18 +34,6 @@ router.get('/', function(req, res) {
         }
     });
 });
-function data_to_JSON(data) {
-    var array = {};
-    for (var i = 0; i < data.length; i++) {
-        var key = "user"+(i+1);
-        array[key] = {
-            'id': data[i].id,
-            'name': data[i].name,
-            'password': data[i].password,
-            'profession': data[i].profession
-        };
-    }
-    return array;
-  }
+
 
 module.exports = router;

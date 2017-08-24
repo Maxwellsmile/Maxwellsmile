@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));//publicxia的html文件
 
 app.use('/select',select);
 app.use('/add',add);
-// app.use('/delect',del);
+app.use('/del',del);
 app.use('/users', users);
 
 /// catch 404 and forwarding to error handler

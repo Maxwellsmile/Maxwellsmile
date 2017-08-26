@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="javascripts/vue.js"></script>
+    </head>
+    <body>       
+        <form id= "rest">
+            <div>
+                <legend>用户登录</legend>
+            </div> 
+
+                <div>
+                <!-- Text input-->
+                <label for="input01">用户名</label>
+                <div>
+                    <input type="text" placeholder="请输入用户名" v-model="user">
+                    <!-- <p>{{ user }}</p> -->
+                </div>
+                </div>
+
+                <div>
+                <!-- Text input-->
+                <label for="input01">密码</label>
+                <div>
+                    <input type="text" placeholder="请输入密码" v-model="password">
+                    <!-- <p>{{ password }}</p> -->
+                </div>
+                </div>
+                
+                <div>
+                <!-- Button -->
+                <div>
+                    <button v-on:click="test">提交</button>
+                </div>
+                </div>
+        </form>
+    
+
+    <script>
+        var rest= new Vue({
+                el:"#rest",
+                data:{
+                    user:'',
+                    password:''
+                },
+            methods:{
+                test: function (){
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {
+                        //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // IE6, IE5 浏览器执行代码
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            // alert('back');
+                            // document.getElementById("rest").innerHTML =xmlhttp.responseText; 
+                            document.write(xmlhttp.responseText);
+                            // document.getElementById("myDiv").innerHTML = "hello world"
+                        }
+                    }
+                    var url='/rest?user=' + this.user + '&password=' + this.password;
+                    // console.log(url);
+                    xmlhttp.open("GET",url, true);
+                    xmlhttp.send();
+                }
+            }
+        })
+        </script>
+               
+    </body>
+</html>

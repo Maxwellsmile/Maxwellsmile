@@ -1,0 +1,7 @@
+ id     name       password    profession    
+  1     mahesh    password1    teacher       
+  2     ramesh     password3    clerk         
+  4     mohit     password4    teacher       
+  INSERT INTO test  VALUES(1,'mahesh','password1','teacher'),(2,'remesh','password2','clerk'),(4,'mohit','password4','teacher');
+
+  ALTER  TABLE  test  MODIFY  password  VARCHAR (12);

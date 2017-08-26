@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <meta charset="UTF-8">        
+    </head>
+    <body>
+        <form id= "rest">
+            <div>
+                <p>用户登录</p>
+            </div> 
+                <div>
+                    账号:
+                    <input id="a1" type="text" placeholder="请输入用户名">
+                </div>
+                <div>
+                    密码: 
+                    <input id="a2" type="text" placeholder="请输入密码">
+                </div>
+                
+                <div>
+                    <input id="a3" type="button" value="登陆" onclick="print()" > 
+                </div>
+        </form>
+        <script>
+            function print(){
+                    var user=document.getElementById("a1").value;
+                    // console.log(user);
+                    var password=document.getElementById("a2").value;
+                    var xmlhttp;
+                    if (window.XMLHttpRequest) {
+                        xmlhttp = new XMLHttpRequest();
+                    } 
+                    else {
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                            // console.log("qwer")
+                            document.getElementById("rest").innerHTML =xmlhttp.responseText; 
+                            // document.write(xmlhttp.responseText);
+                            // document.getElementById("rest").innerHTML = "hello world"
+                        }
+                    }
+                    var url='/rest?user=' + user + '&password=' + password;
+                    console.log(url);
+                    xmlhttp.open("GET",url, true);
+                    xmlhttp.send();
+                }
+        </script>
+    </body>
+</html>

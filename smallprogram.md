@@ -1,0 +1,306 @@
+一  文件结构
+小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。
+
+一个小程序主体部分由三个文件组成，必须放在项目的根目录，如下：
+
+文件	必填	作用
+app.js	是	小程序逻辑
+app.json	是	小程序公共设置
+app.wxss	否	小程序公共样式表
+一个小程序页面由四个文件组成，分别是：
+
+文件类型	必填	作用
+js	是	页面逻辑
+wxml	是	页面结构
+wxss	否	页面样式表
+json	否	页面配置
+注意：为了方便开发者减少配置项，我们规定描述页面的这四个文件必须具有相同的路径与文件名。
+
+
+
+二  wx:if vs hidden
+因为 wx:if 之中的模板也可能包含数据绑定，所有当 wx:if 的条件值切换时，框架有一个局部渲染的过程，因为它会确保条件块在切换时销毁或重新渲染。
+
+同时 wx:if 也是惰性的，如果在初始渲染条件为 false，框架什么也不做，在条件第一次变成真的时候才开始局部渲染。
+
+相比之下，hidden 就简单的多，组件始终会被渲染，只是简单的控制显示与隐藏。
+
+一般来说，wx:if 有更高的切换消耗而 hidden 有更高的初始渲染消耗。因此，如果需要频繁切换的情景下，用 hidden 更好，如果在运行时条件不大可能改变则 wx:if 较好。
+
+
+
+
+三  setData
+setData 是小程序开发中使用最频繁的接口，也是最容易引发性能问题的接口。在介绍常见的错误用法前，先简单介绍一下 setData 背后的工作原理。
+
+工作原理
+小程序的视图层目前使用 WebView 作为渲染载体，而逻辑层是由独立的 JavascriptCore 作为运行环境。在架构上，WebView 和 JavascriptCore 都是独立的模块，并不具备数据直接共享的通道。当前，视图层和逻辑层的数据传输，实际上通过两边提供的 evaluateJavascript 所实现。即用户传输的数据，需要将其转换为字符串形式传递，同时把转换后的数据内容拼接成一份 JS 脚本，再通过执行 JS 脚本的形式传递到两边独立环境。
+
+而 evaluateJavascript 的执行会受很多方面的影响，数据到达视图层并不是实时的。同一进程内的 WebView 实际上会共享一个 JS VM，如果 WebView 内 JS 线程正在执行渲染或其他逻辑，会影响 evaluateJavascript 脚本的实际执行时间，另外多个 WebView 也会抢占 JS VM 的执行权限；另外还有 JS 本身的编译执行耗时，都是影响数据传输速度的因素。
+
+常见的 setData 操作错误
+1. 频繁的去 setData
+
+在我们分析过的一些案例里，部分小程序会非常频繁（毫秒级）的去setData，其导致了两个后果：
+
+Android 下用户在滑动时会感觉到卡顿，操作反馈延迟严重，因为 JS 线程一直在编译执行渲染，未能及时将用户操作事件传递到逻辑层，逻辑层亦无法及时将操作处理结果及时传递到视图层；
+渲染有出现延时，由于 WebView 的 JS 线程一直处于忙碌状态，逻辑层到页面层的通信耗时上升，视图层收到的数据消息时距离发出时间已经过去了几百毫秒，渲染的结果并不实时；
+2. 每次 setData 都传递大量新数据
+
+由setData的底层实现可知，我们的数据传输实际是一次 evaluateJavascript 脚本过程，当数据量过大时会增加脚本的编译执行时间，占用 WebView JS 线程，
+
+3. 后台态页面进行 setData
+
+当页面进入后台态（用户不可见），不应该继续去进行setData，后台态页面的渲染用户是无法感受的，另外后台态页面去setData也会抢占前台页面的执行。
+
+图片资源
+目前图片资源的主要性能问题在于大图片和长列表图片上，这两种情况都有可能导致 iOS 客户端内存占用上升，从而触发系统回收小程序页面。
+
+图片对内存的影响
+在 iOS 上，小程序的页面是由多个 WKWebView 组成的，在系统内存紧张时，会回收掉一部分 WKWebView。从过去我们分析的案例来看，大图片和长列表图片的使用会引起 WKWebView 的回收。
+
+图片对页面切换的影响
+除了内存问题外，大图片也会造成页面切换的卡顿。我们分析过的案例中，有一部分小程序会在页面中引用大图片，在页面后退切换中会出现掉帧卡顿的情况。
+
+当前我们建议开发者尽量减少使用大图片资源。
+
+代码包大小的优化
+小程序一开始时代码包限制为 1MB，但我们收到了很多反馈说代码包大小不够用，经过评估后我们放开了这个限制，增加到 2MB 。代码包上限的增加对于开发者来说，能够实现更丰富的功能，但对于用户来说，也增加了下载流量和本地空间的占用。
+
+开发者在实现业务逻辑同时也有必要尽量减少代码包的大小，因为代码包大小直接影响到下载速度，从而影响用户的首次打开体验。除了代码自身的重构优化外，还可以从这两方面着手优化代码大小：
+
+控制代码包内图片资源
+小程序代码包经过编译后，会放在微信的 CDN 上供用户下载，CDN 开启了 GZIP 压缩，所以用户下载的是压缩后的 GZIP 包，其大小比代码包原体积会更小。 但我们分析数据发现，不同小程序之间的代码包压缩比差异也挺大的，部分可以达到 30%，而部分只有 80%，而造成这部分差异的一个原因，就是图片资源的使用。GZIP 对基于文本资源的压缩效果最好，在压缩较大文件时往往可高达 70%-80% 的压缩率，而如果对已经压缩的资源（例如大多数的图片格式）则效果甚微。
+
+及时清理没有使用到的代码和资源
+在日常开发的时候，我们可能引入了一些新的库文件，而过了一段时间后，由于各种原因又不再使用这个库了，我们常常会只是去掉了代码里的引用，而忘记删掉这类库文件了。目前小程序打包是会将工程下所有文件都打入代码包内，也就是说，这些没有被实际使用到的库文件和资源也会被打入到代码包里，从而影响到整体代码包的大小。
+
+
+
+
+四  基础组件
+框架为开发者提供了一系列基础组件，开发者可以通过组合这些基础组件进行快速开发。
+
+什么是组件：
+
+组件是视图层的基本组成单元。
+组件自带一些功能与微信风格的样式。
+一个组件通常包括开始标签和结束标签，属性用来修饰这个组件，内容在两个标签之内。
+
+<tagname property="value">
+  Content goes here ...
+</tagname>
+注意：所有组件与属性都是小写，以连字符-连接
+
+属性类型
+类型	描述	注解
+Boolean	布尔值	组件写上该属性，不管该属性等于什么，其值都为true，只有组件上没有写该属性时，属性值才为false。如果属性值为变量，变量的值会被转换为Boolean类型
+Number	数字	1, 2.5
+String	字符串	"string"
+Array	数组	[ 1, "string" ]
+Object	对象	{ key: value }
+EventHandler	事件处理函数名	"handlerName" 是 Page中定义的事件处理函数名
+Any	任意属性
+共同属性类型
+所有组件都有的属性：
+
+属性名	类型	描述	注解
+id	String	组件的唯一标示	保持整个页面唯一
+class	String	组件的样式类	在对应的 WXSS 中定义的样式类
+style	String	组件的内联样式	可以动态设置的内联样式
+hidden	Boolean	组件是否显示	所有组件默认显示
+data-*	Any	自定义属性	组件上触发的事件时，会发送给事件处理函数
+bind* / catch*	EventHandler	组件的事件	详见事件
+特殊属性
+几乎所有组件都有各自定义的属性，可以对该组件的功能或样式进行修饰，请参考各个组件的定义。
+
+组件列表
+基础组件分为以下七大类：
+
+视图容器(View Container)：
+
+组件名	说明
+view	视图容器
+scroll-view	可滚动视图容器
+swiper	滑块视图容器
+基础内容(Basic Content)：
+
+组件名	说明
+icon	图标
+text	文字
+progress	进度条
+表单(Form)：
+
+标签名	说明
+button	按钮
+form	表单
+input	输入框
+checkbox	多项选择器
+radio	单项选择器
+picker	列表选择器
+picker-view	内嵌列表选择器
+slider	滚动选择器
+switch	开关选择器
+label	标签
+导航(Navigation)：
+
+组件名	说明
+navigator	应用链接
+多媒体(Media)：
+
+组件名	说明
+audio	音频
+image	图片
+video	视频
+地图(Map)：
+
+组件名	说明
+map	地图
+画布(Canvas)：
+
+组件名	说明
+canvas	画布
+客服会话：
+
+组件名	说明
+contact-button	进入客服会话按钮
+
+
+
+
+
+五  API
+框架提供丰富的微信原生API，可以方便的调起微信提供的能力，如获取用户信息，本地存储，支付功能等。
+
+说明：
+
+wx.on 开头的 API 是监听某个事件发生的API接口，接受一个 CALLBACK 函数作为参数。当该事件触发时，会调用 CALLBACK 函数。
+如未特殊约定，其他 API 接口都接受一个OBJECT作为参数。
+OBJECT中可以指定success, fail, complete来接收接口调用结果。
+参数名	类型	必填	说明
+success	Function	否	接口调用成功的回调函数
+fail	Function	否	接口调用失败的回调函数
+complete	Function	否	接口调用结束的回调函数（调用成功、失败都会执行）
+API列表：
+
+网络 API 列表：
+
+API	说明
+wx.request	发起网络请求
+wx.uploadFile	上传文件
+wx.downloadFile	下载文件
+wx.connectSocket	创建 WebSocket 连接
+wx.onSocketOpen	监听 WebSocket 打开
+wx.onSocketError	监听 WebSocket 错误
+wx.sendSocketMessage	发送 WebSocket 消息
+wx.onSocketMessage	接受 WebSocket 消息
+wx.closeSocket	关闭 WebSocket 连接
+wx.onSocketClose	监听 WebSocket 关闭
+媒体 API 列表：
+
+API	说明
+wx.chooseImage	从相册选择图片，或者拍照
+wx.previewImage	预览图片
+wx.startRecord	开始录音
+wx.stopRecord	结束录音
+wx.playVoice	播放语音
+wx.pauseVoice	暂停播放语音
+wx.stopVoice	结束播放语音
+wx.getBackgroundAudioPlayerState	获取音乐播放状态
+wx.playBackgroundAudio	播放音乐
+wx.pauseBackgroundAudio	暂停播放音乐
+wx.seekBackgroundAudio	控制音乐播放进度
+wx.stopBackgroundAudio	停止播放音乐
+wx.onBackgroundAudioPlay	监听音乐开始播放
+wx.onBackgroundAudioPause	监听音乐暂停
+wx.onBackgroundAudioStop	监听音乐结束
+wx.chooseVideo	从相册选择视频，或者拍摄
+文件 API 列表：
+
+API	说明
+wx.saveFile	保存文件
+wx.getSavedFileList	获取已保存的文件列表
+wx.getSavedFileInfo	获取已保存的文件信息
+wx.removeSavedFile	删除已保存的文件信息
+wx.openDocument	打开文件
+数据 API 列表：
+
+API	说明
+wx.getStorage	获取本地数据缓存
+wx.getStorageSync	获取本地数据缓存
+wx.setStorage	设置本地数据缓存
+wx.setStorageSync	设置本地数据缓存
+wx.getStorageInfo	获取本地缓存的相关信息
+wx.getStorageInfoSync	获取本地缓存的相关信息
+wx.removeStorage	删除本地缓存内容
+wx.removeStorageSync	删除本地缓存内容
+wx.clearStorage	清理本地数据缓存
+wx.clearStorageSync	清理本地数据缓存
+位置 API 列表：
+
+API	说明
+wx.getLocation	获取当前位置
+wx.chooseLocation	打开地图选择位置
+wx.openLocation	打开内置地图
+wx.createMapContext	地图组件控制
+设备 API 列表：
+
+API	说明
+wx.getNetworkType	获取网络类型
+wx.onNetworkStatusChange	监听网络状态变化
+wx.getSystemInfo	获取系统信息
+wx.getSystemInfoSync	获取系统信息
+wx.onAccelerometerChange	监听加速度数据
+wx.startAccelerometer	开始监听加速度数据
+wx.stopAccelerometer	停止监听加速度数据
+wx.onCompassChange	监听罗盘数据
+wx.startCompass	开始监听罗盘数据
+wx.stopCompass	停止监听罗盘数据
+wx.setClipboardData	设置剪贴板内容
+wx.getClipboardData	获取剪贴板内容
+wx.makePhoneCall	拨打电话
+wx.scanCode	扫码
+界面 API 列表：
+
+API	说明
+wx.showToast	显示提示框
+wx.showLoading	显示加载提示框
+wx.hideToast	隐藏提示框
+wx.hideLoading	隐藏提示框
+wx.showModal	显示模态弹窗
+wx.showActionSheet	显示菜单列表
+wx.setNavigationBarTitle	设置当前页面标题
+wx.showNavigationBarLoading	显示导航条加载动画
+wx.hideNavigationBarLoading	隐藏导航条加载动画
+wx.navigateTo	新窗口打开页面
+wx.redirectTo	原窗口打开页面
+wx.switchTab	切换到 tabbar 页面
+wx.navigateBack	退回上一个页面
+wx.createAnimation	动画
+wx.createContext	创建绘图上下文
+wx.drawCanvas	绘图
+wx.stopPullDownRefresh	停止下拉刷新动画
+WXML节点信息 API 列表：
+
+API	说明
+wx.createSelectorQuery	创建查询请求
+selectorQuery.select	根据选择器选择单个节点
+selectorQuery.selectAll	根据选择器选择全部节点
+selectorQuery.selectViewport	选择显示区域
+nodesRef.boundingClientRect	获取布局位置和尺寸
+nodesRef.scrollOffset	获取滚动位置
+nodesRef.fields	获取任意字段
+selectorQuery.exec	执行查询请求
+开放接口：
+
+API	说明
+wx.login	登录
+wx.getUserInfo	获取用户信息
+wx.chooseAddress	获取用户收货地址
+wx.requestPayment	发起微信支付
+wx.addCard	添加卡券
+wx.openCard	打开卡券
+
+
+具体还须再参照小程序教程：https://mp.weixin.qq.com/debug/wxadoc/dev/
+

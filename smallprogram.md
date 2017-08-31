@@ -1,7 +1,3 @@
-
-1. Page 实例的生命周期图；
-
-
 一  文件结构
 小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。
 
@@ -304,6 +300,52 @@ wx.chooseAddress	获取用户收货地址
 wx.requestPayment	发起微信支付
 wx.addCard	添加卡券
 wx.openCard	打开卡券
+
+
+六  app.json的配置列表
+
+1. pages              设置页面路径
+接受一个数组，每一项都是字符串，来指定小程序由哪些页面组成。每一项代表对应页面的【路径+文件名】信息，数组的第一项代表小程序的初始页面。小程序中新增/减少页面，都需要对 pages 数组进行修改。
+
+文件名不需要写文件后缀，因为框架会自动去寻找路径.json,.js,.wxml,.wxss的四个文件进行整合。
+
+2. window             设置默认页面的窗口表现
+用于设置小程序的状态栏、导航条、标题、窗口背景色。
+
+3. tabBar             设置底部 tab 的表现
+如果我们的小程序是一个多 tab 应用（客户端窗口的底部或顶部有 tab 栏可以切换页面），那么我们可以通过 tabBar 配置项指定 tab 栏的表现，以及 tab 切换时显示的对应页面。
+Tip：
+
+(1).当设置 position 为 top 时，将不会显示 icon
+(2).tabBar 中的 list 是一个数组，只能配置最少2个、最多5个 tab，tab 按数组的顺序排序。
+
+4. networkTimeout     设置网络超时时间
+可以设置各种网络请求的超时时间
+
+5. debug              设置是否开启 debug 模式
+可以在开发者工具中开启 debug 模式，在开发者工具的控制台面板，调试信息以 info 的形式给出，其信息有Page的注册，页面路由，数据更新，事件触发 。 可以帮助开发者快速定位一些常见的问题。
+
+七   Page 
+
+Page() 函数用来注册一个页面。接受一个 object 参数，其指定页面的初始数据、生命周期函数、事件处理函数等。
+
+object 参数说明：
+
+属性	               类型	                       描述
+data	              Object	                页面的初始数据
+onLoad	            Function	              生命周期函数--监听页面加载
+onReady	            Function	              生命周期函数--监听页面初次渲染完成
+onShow	            Function	              生命周期函数--监听页面显示
+onHide	            Function	              生命周期函数--监听页面隐藏
+onUnload	          Function	              生命周期函数--监听页面卸载
+onPullDownRefresh	  Function	              页面相关事件处理函数--监听用户下拉动作
+onReachBottom	      Function	              页面上拉触底事件的处理函数
+onShareAppMessage	  Function	              用户点击右上角转发
+onPageScroll	      Function	              页面滚动触发事件的处理函数
+其他	              Any	                    开发者可以添加任意的函数或数据到 object                                             参数中，在页面的函数中用 this 可以访问
+
+
+
 
 
 具体还须再参照小程序教程：https://mp.weixin.qq.com/debug/wxadoc/dev/

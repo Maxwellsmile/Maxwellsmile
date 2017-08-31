@@ -1,4 +1,4 @@
-一  文件结构
+﻿一  文件结构
 小程序包含一个描述整体程序的 app 和多个描述各自页面的 page。
 
 一个小程序主体部分由三个文件组成，必须放在项目的根目录，如下：
@@ -342,7 +342,7 @@ onPullDownRefresh	  Function	              页面相关事件处理函数--监�
 onReachBottom	      Function	              页面上拉触底事件的处理函数
 onShareAppMessage	  Function	              用户点击右上角转发
 onPageScroll	      Function	              页面滚动触发事件的处理函数
-其他	              Any	                    开发者可以添加任意的函数或数据到 object                                             参数中，在页面的函数中用 this 可以访问
+其他	              Any	                    开发者可以添加任意的函数或数据到 object参数中，在页面的函数中用 this 可以访问
 
 
 
